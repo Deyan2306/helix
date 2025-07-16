@@ -1,25 +1,14 @@
-import co.helix.structure.{DNA, Helix}
+import co.helix.structure.{DNA, Helix, Nucleotide}
 import co.helix.PrettyPrinter
+import co.helix.structure.DNA.toString
 
 import scala.util.Random
 
 object Main extends App {
 
-    val dnaStr = "ACGTACGT"
-    val dna = DNA.fromString(dnaStr)
+    val dna = DNA.fromString("ATGCGCGATTAGCGCGCTAGCTAGCTAGCGCGCGCGAT").getOrElse(sys.error("Invalid DNA"))
 
-    PrettyPrinter.printValidation(dna)
+    println(f"Overall GC Content: ${Helix.gcContent(dna)}%.2f%%")
+    PrettyPrinter.showGCContentSubsections(dna, 10)
 
-    dna match {
-        case Right(validDna) =>
-            // Pretty print nucleotide counts
-            val counts = Helix.countNucleotides(validDna)
-            PrettyPrinter.printCounts(counts)
-
-            // Pretty print random DNA
-            val randomDNA = Helix.randomDNA(10, new Random())
-            PrettyPrinter.printRandomDNA(randomDNA)
-
-        case Left(_) => // Already printer an error
-    }
 }

@@ -1,27 +1,25 @@
 package co.helix.structure
 
-sealed trait Nucleotide
+enum Nucleotide(val char: Char) {
+    case A extends Nucleotide('A')
+    case C extends Nucleotide('C')
+    case G extends Nucleotide('G')
+    case T extends Nucleotide('T')
+    
+    def complement: Nucleotide = this match {
+        case A => T
+        case T => A
+        case C => G
+        case G => C
+    }
+}
+
 object Nucleotide {
-    case object A extends Nucleotide
-    case object C extends Nucleotide
-    case object G extends Nucleotide
-    case object T extends Nucleotide
 
     val all: List[Nucleotide] = List(A, C, G, T)
 
     def fromChar(c: Char): Option[Nucleotide] =
-        c.toUpper match {
-            case 'A' => Some(A)
-            case 'C' => Some(C)
-            case 'G' => Some(G)
-            case 'T' => Some(T)
-            case _   => None
-        }
+        all.find(_.char == c.toUpper)
 
-    def toChar(n: Nucleotide): Char = n match {
-        case A => 'A'
-        case C => 'C'
-        case G => 'G'
-        case T => 'T'
-    }
+    def toChar(n: Nucleotide): Char = n.char
 }
